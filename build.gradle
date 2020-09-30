@@ -1,6 +1,12 @@
+plugins {
+    id "com.jfrog.bintray" version "1.8.5"
+}
+
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
+
+apply from: 'publish.gradle'
 
 android {
     compileSdkVersion 29

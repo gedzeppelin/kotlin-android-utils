@@ -16,8 +16,8 @@ def properties = new Properties()
 properties.load(new FileInputStream("local.properties"))
 
 bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apiKey")
+    user = project.hasProperty("bintray.user") ? project.getProperty("bintray.user") : System.getenv("BINTRAY_USER")
+    key = project.hasProperty("bintray.apiKey") ? project.getProperty("bintray.apiKey") : System.getenv("BINTRAY_API_KEY")
     publications = ["Production"]
     configurations = ["archives"]
     override = true
