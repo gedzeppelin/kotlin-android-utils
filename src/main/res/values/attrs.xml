@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProgressButton">
+        <attr name="android:enabled" />
+        <attr name="android:indeterminateTint" />
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="backgroundTint" format="color" />
+        <attr name="ignoreByDelegate" format="boolean" />
+        <attr name="innerMargin" format="dimension" />
+        <attr name="progressBarSize" format="dimension" />
+        <attr name="type" format="enum">
+            <enum name="contained" value="0" />
+            <enum name="flat" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SuspendView">
+        <attr name="errorButtonText" format="string" />
+        <attr name="errorText" format="string" />
+        <attr name="initialState" format="enum">
+            <enum name="error" value="0" />
+            <enum name="loading" value="1" />
+            <enum name="success" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SuspendListView">
+        <attr name="emptyText" format="string" />
+        <attr name="innerPadding" format="dimension" />
+    </declare-styleable>
+</resources>

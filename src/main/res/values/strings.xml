@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="snackbar_app_close">CERRAR</string>
+
+    <string name="tvw__suspendable_view__default_error">Ha ocurrido un error al procesar esta información</string>
+    <string name="tvw__suspend_section_list__default_empty">No existe información para mostrar</string>
+
+    <string name="pbtn__default_text">MODIFICAR</string>
+    <string name="pbtn__suspendable_view__default_text">REINTENTAR</string>
+
+    <string name="til_error_address">Dirección inválida.</string>
+    <string name="til_error_default">Campo inválido.</string>
+    <string name="til_error_email">Email inválido.</string>
+    <string name="til_error_empty">Este campo es obligatorio.</string>
+    <string name="til_error_name">Nombre inválido.</string>
+    <string name="til_error_password">Su contraseña es inválida.</string>
+    <string name="til_error__password_repeat">Sus contraseñas no coinciden</string>
+    <string name="til_error_phone">Teléfono inválido.</string>
+
+    <string name="delegate__custom_validator__default_error">Un elemento obligatorio no ha sido provisto</string>
+
+    <string name="dialog_action__confirm">¿Está seguro que desea &lt;b>%1$s&lt;/b> el ítem de nombre &lt;b>%2$s&lt;/b>?</string>
+    <string name="dialog_action__on_error">Ocurrió un error al %1$s el ítem de nombre &lt;i>%2$s&lt;/i>. Intente nuevamente</string>
+    <string name="dialog_action__on_success">Se ha %1$s correctamente el ítem de nombre &lt;i>%2$s&lt;/i></string>
+    <string name="dialog_action__title">Confirmar acción</string>
+    <string name="sheet_action__on_error">Ocurrió un error al %1$s su ítem. Intente nuevamente</string>
+    <string name="sheet_action__on_success">Se ha %1$s correctamente el ítem de nombre &lt;i>%2$s&lt;/i></string>
+</resources>

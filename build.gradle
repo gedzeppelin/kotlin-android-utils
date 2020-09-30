@@ -1,0 +1,57 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "0.5"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    kotlinOptions {
+        jvmTarget = 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    // JetBrains dependencies.
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8"
+    // Google dependencies.
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "androidx.core:core-ktx:1.3.1"
+    implementation "androidx.fragment:fragment-ktx:1.3.0-alpha08"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
+    implementation "com.github.yalantis:ucrop:2.2.5-native"
+    implementation "com.google.android.material:material:1.2.1"
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    testImplementation "junit:junit:4.13"
+
+    // Application dependencies.
+    implementation 'com.squareup.moshi:moshi:1.10.0'
+    implementation "me.jorgecastillo:androidcolorx:0.2.0"
+}

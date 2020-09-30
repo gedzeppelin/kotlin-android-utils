@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="action_activate">
+        <item>activado</item>
+        <item>activar</item>
+        <item>activará</item>
+    </string-array>
+
+    <string-array name="action_create">
+        <item>creado</item>
+        <item>crear</item>
+        <item>creará</item>
+    </string-array>
+
+    <string-array name="action_deactivate">
+        <item>desactivado</item>
+        <item>desactivar</item>
+        <item>desactivará</item>
+    </string-array>
+
+    <string-array name="action_delete">
+        <item>eliminado</item>
+        <item>eliminar</item>
+        <item>eliminará</item>
+    </string-array>
+
+    <string-array name="action_modify">
+        <item>modificado</item>
+        <item>modificar</item>
+        <item>modificará</item>
+    </string-array>
+</resources>

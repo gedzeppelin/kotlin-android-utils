@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn__default_inner_margin">10dp</dimen>
+    <dimen name="pbr__default_elevation">3dp</dimen>
+    <dimen name="pbr__default_size">28dp</dimen>
+    <dimen name="srs__default_inner_padding">8dp</dimen>
+</resources>
