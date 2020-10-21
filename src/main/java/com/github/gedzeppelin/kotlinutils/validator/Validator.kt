@@ -22,12 +22,20 @@ import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import com.github.gedzeppelin.kotlinutils.GlobalToast.Companion.longToast
-import com.github.gedzeppelin.kotlinutils.validator.impl1.ValidatableEditText
-import com.github.gedzeppelin.kotlinutils.validator.impl1.ValidatableEditTextLayout
-import com.github.gedzeppelin.kotlinutils.validator.impl1.ValidatableField
+import com.github.gedzeppelin.kotlinutils.validator.impl.validatable.ValidatableEditText
+import com.github.gedzeppelin.kotlinutils.validator.impl.validatable.ValidatableEditTextLayout
+import com.github.gedzeppelin.kotlinutils.validator.impl.validatable.ValidatableField
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlin.reflect.KProperty0
+
+interface ValidatorContext {
+    val aContext: Context
+
+    val errorCache: MutableSet<CharSequence>
+
+    fun validate(): Boolean
+}
 
 /**
  * (ES) Validador Base, clase que se puede extender para soportar validadores customizados.
@@ -39,9 +47,9 @@ import kotlin.reflect.KProperty0
  *   cuando todos los [ValidatableRequired] en [vMap] son válidos.
  *   (EN) the View to which the validator is rooted. It's only enabled when all [ValidatableRequired]
  *   objects in [vMap] are valid.
- * @property onTargetClickListener (ES) la función que se ejecuta en un click válido sobre [target].
+ * @property onTargetClickBlock (ES) la función que se ejecuta en un click válido sobre [target].
  *   (EN) the function that is executed on [target] valid click.
- * @property context (ES) el contexto en el que esta clase es instanciada.
+ * @property aContext (ES) el contexto en el que esta clase es instanciada.
  *   (EN) the context which the class is instantiated with.
  * @property hasStarted (ES) falso hasta que se realiza el primer click sobre [target].
  *   (EN) false until the first click on activatorView.
@@ -53,25 +61,28 @@ import kotlin.reflect.KProperty0
  */
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class Validator<T : View>(
-    override val context: Context,
+    override val aContext: Context,
     val target: T
-) : ValidatableContext {
+) : ValidatorContext {
     override val errorCache = mutableSetOf<CharSequence>()
 
-    override fun validate() {
+    private var hasStarted: Boolean = false
+
+    override fun validate(): Boolean {
         if (hasStarted) {
-            val v0 = vMap.filterValues { it.state == State.ACTIVE && !it.isValid }
-            isEnabled = v0.isEmpty()
+            val isValid = vMap.filterValues { it.state == State.ACTIVE && !it.isValid }.isEmpty()
+            isEnabled = isValid
+            return isValid
         }
+        return false
     }
 
-    private var onTargetClickListener: ((T) -> Unit)? = null
+    private var onTargetClickBlock: ((T) -> Unit)? = null
     private val vMap = mutableMapOf<String, Validatable>()
 
     // TODO find a way to remove the necessity of using the stop cache.
     private val vStopCache = mutableSetOf<String>()
 
-    private var hasStarted: Boolean = false
     abstract var isLoading: Boolean
     var isEnabled: Boolean
         get() = target.isEnabled
@@ -150,7 +161,7 @@ abstract class Validator<T : View>(
         callback: (String) -> Boolean,
         state: State
     ): ValidatableEditText<out EditText> {
-        val errorString = context.getString(error)
+        val errorString = aContext.getString(error)
         // Try to get the parent TextInputLayout.
         val til = (inputView.parent as? FrameLayout)?.parent as? TextInputLayout
 
@@ -227,7 +238,7 @@ abstract class Validator<T : View>(
         callback: (String) -> Boolean = { it.trim().isNotEmpty() }
     ): VleEditText {
         val editText = prop.get()
-        val error = getDefaultError(context, editText)
+        val error = getDefaultError(aContext, editText)
         return addEditText(prop.name, error, editText, callback, state)
     }
 
@@ -245,7 +256,7 @@ abstract class Validator<T : View>(
         state: State = State.ASLEEP,
         callback: (S?) -> Boolean = { it != null }
     ): ValidatableField<S> {
-        val errorStr = context.getString(error)
+        val errorStr = aContext.getString(error)
         val validatable = ValidatableField(this, errorStr, initial, callback, state)
         return add(key, validatable)
     }
@@ -296,19 +307,19 @@ abstract class Validator<T : View>(
     /**
      * Sets on click logic to the activator view.
      * - If validation has started and the view is enabled (view is only enabled when global
-     *   valid state is true) invokes [onTargetClickListener] with [onTargetClickListener].
+     *   valid state is true) invokes [onTargetClickBlock] with [onTargetClickBlock].
      * - If validation has not started yet [hasStarted] is setted to true, lazy validators
      *   are started and all validators are (re)validated, then global valid state is checked and
-     *   assigned to the activator view's enabled state, if true also invokes [onTargetClickListener].
+     *   assigned to the activator view's enabled state, if true also invokes [onTargetClickBlock].
      */
     open fun startLazy(block: (T) -> Unit) {
         /* Initialize lateinit property. */
-        onTargetClickListener = block
+        onTargetClickBlock = block
         /* Set activator view logic. */
         target.setOnClickListener {
             // If already started and the activator view is enabled the activation block must be invoked.
             if (hasStarted) {
-                onTargetClick()
+                if (validate()) onTargetClick()
             } else {
                 vMap.values.forEach {
                     // Start lazy validators.
@@ -317,17 +328,14 @@ abstract class Validator<T : View>(
 
                 if (errorCache.isNotEmpty()) {
                     val snackbarError = errorCache.fold("Error:") { acc, s -> "$acc\n- $s" }
-                    context.longToast(snackbarError)
+                    aContext.longToast(snackbarError)
                 }
 
                 // Set the validator as started.
                 hasStarted = true
 
-                /* Change enabled state of activator view. */
-                validate()
-
                 /* If the validator is valid then the activation block must be invoked. */
-                if (isEnabled) onTargetClick()
+                if (validate()) onTargetClick()
             }
         }
     }
@@ -338,6 +346,6 @@ abstract class Validator<T : View>(
      * additional logic related with a valid click can be added when overriding this method.
      */
     open fun onTargetClick() {
-        onTargetClickListener?.invoke(target)
+        onTargetClickBlock?.invoke(target)
     }
 }

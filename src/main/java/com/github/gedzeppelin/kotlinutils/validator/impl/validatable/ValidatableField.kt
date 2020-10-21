@@ -1,12 +1,14 @@
-package com.github.gedzeppelin.kotlinutils.validator.impl1
+@file:Suppress("unused")
+
+package com.github.gedzeppelin.kotlinutils.validator.impl.validatable
 
 import com.github.gedzeppelin.kotlinutils.validator.State
-import com.github.gedzeppelin.kotlinutils.validator.ValidatableContext
 import com.github.gedzeppelin.kotlinutils.validator.ValidatableNullable
 import com.github.gedzeppelin.kotlinutils.validator.ValidatableRequired
+import com.github.gedzeppelin.kotlinutils.validator.ValidatorContext
 
 class ValidatableField<T : Any>(
-    ctx: ValidatableContext,
+    ctx: ValidatorContext,
     error: CharSequence,
     initial: T?,
     override var callback: (T?) -> Boolean,
@@ -19,11 +21,11 @@ class ValidatableField<T : Any>(
         }
 
     override fun onError(err: CharSequence) {
-        validatableContext.errorCache.add(error)
+        vContext.errorCache.add(error)
     }
 
     override fun onSuccess() {
-        validatableContext.errorCache.remove(error)
+        vContext.errorCache.remove(error)
     }
 
     override fun onStart() = Unit
@@ -32,7 +34,7 @@ class ValidatableField<T : Any>(
 }
 
 class ValidatableRequiredField<T : Any>(
-    ctx: ValidatableContext,
+    ctx: ValidatorContext,
     error: CharSequence,
     initial: T,
     override var callback: (T) -> Boolean,
@@ -45,11 +47,11 @@ class ValidatableRequiredField<T : Any>(
         }
 
     override fun onError(err: CharSequence) {
-        validatableContext.errorCache.add(error)
+        vContext.errorCache.add(error)
     }
 
     override fun onSuccess() {
-        validatableContext.errorCache.remove(error)
+        vContext.errorCache.remove(error)
     }
 
     override fun onStart() = Unit

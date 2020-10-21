@@ -19,15 +19,6 @@
 
 package com.github.gedzeppelin.kotlinutils.validator
 
-import android.content.Context
-
-interface ValidatableContext {
-    val context: Context
-
-    val errorCache: MutableSet<CharSequence>
-
-    fun validate()
-}
 
 enum class State { ASLEEP, ACTIVE, STOPPED }
 
@@ -39,7 +30,7 @@ enum class State { ASLEEP, ACTIVE, STOPPED }
  *   (EN) message to be displayed when [checkValidity] returns false.
  */
 abstract class Validatable(
-    val validatableContext: ValidatableContext,
+    val vContext: ValidatorContext,
     var error: CharSequence,
     state: State
 ) {
@@ -82,7 +73,7 @@ abstract class Validatable(
             isValid = validity
 
             if (state == State.ACTIVE) onValidate(validity)
-            validatableContext.validate()
+            vContext.validate()
         }
 
         return validity
@@ -106,7 +97,7 @@ abstract class Validatable(
     fun refresh(): Boolean {
         if (state != State.STOPPED) {
             if (state == State.ACTIVE) onValidate(isValid)
-            validatableContext.validate()
+            vContext.validate()
         }
 
         return isValid
@@ -151,7 +142,7 @@ abstract class Validatable(
  *   (EN) te object that is validated.
  */
 abstract class ValidatableRequired<T : Any>(
-    ctx: ValidatableContext,
+    ctx: ValidatorContext,
     error: CharSequence,
     state: State
 ) : Validatable(ctx, error, state) {
@@ -173,7 +164,7 @@ abstract class ValidatableRequired<T : Any>(
  *   (EN) te object that is validated.
  */
 abstract class ValidatableNullable<T : Any>(
-    ctx: ValidatableContext,
+    ctx: ValidatorContext,
     error: CharSequence,
     state: State
 ) : Validatable(ctx, error, state) {

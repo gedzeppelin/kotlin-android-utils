@@ -15,12 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.gedzeppelin.kotlinutils.validator.impl1
+package com.github.gedzeppelin.kotlinutils.validator.impl.validatable
 
 import android.widget.EditText
 import com.github.gedzeppelin.kotlinutils.validator.State
-import com.github.gedzeppelin.kotlinutils.validator.ValidatableContext
-import com.google.android.material.textfield.TextInputEditText
+import com.github.gedzeppelin.kotlinutils.validator.ValidatorContext
 import com.google.android.material.textfield.TextInputLayout
 
 
@@ -36,7 +35,7 @@ import com.google.android.material.textfield.TextInputLayout
  * @see ValidatableEditText
  */
 class ValidatableEditTextLayout<T : EditText, S : TextInputLayout>(
-    ctx: ValidatableContext,
+    ctx: ValidatorContext,
     error: CharSequence,
     private val til: S,
     value: T,

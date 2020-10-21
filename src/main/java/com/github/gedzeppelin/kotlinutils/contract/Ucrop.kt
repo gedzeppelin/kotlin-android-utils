@@ -7,7 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
-import com.github.gedzeppelin.kotlinutils.util.getCacheUri
+import com.github.gedzeppelin.kotlinutils.util.makeTempUri
 import com.github.gedzeppelin.kotlinutils.util.withArgs
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.UCropActivity
@@ -25,7 +25,7 @@ class Ucrop(
     override fun createIntent(context: Context, input: Uri): Intent {
         return Intent(context, UCropActivity::class.java).withArgs {
             putParcelable(UCrop.EXTRA_INPUT_URI, input)
-            putParcelable(UCrop.EXTRA_OUTPUT_URI, context.getCacheUri())
+            putParcelable(UCrop.EXTRA_OUTPUT_URI, context.makeTempUri())
             putFloat(UCrop.EXTRA_ASPECT_RATIO_X, x)
             putFloat(UCrop.EXTRA_ASPECT_RATIO_Y, y)
         }

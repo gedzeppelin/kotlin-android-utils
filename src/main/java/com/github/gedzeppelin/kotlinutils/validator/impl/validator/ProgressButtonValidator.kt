@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.gedzeppelin.kotlinutils.validator.impl0
+package com.github.gedzeppelin.kotlinutils.validator.impl.validator
 
 import android.content.Context
 import com.github.gedzeppelin.kotlinutils.validator.Validator

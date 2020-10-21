@@ -12,7 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.github.gedzeppelin.kotlinutils.validator.PbtnValidator
-import com.github.gedzeppelin.kotlinutils.validator.impl0.ProgressButtonValidator
+import com.github.gedzeppelin.kotlinutils.validator.impl.validator.ProgressButtonValidator
 import com.github.gedzeppelin.kotlinutils.widget.ProgressButton
 
 abstract class PbtnValidatorIdDelegate(

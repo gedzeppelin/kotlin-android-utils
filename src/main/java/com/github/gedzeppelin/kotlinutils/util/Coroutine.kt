@@ -1,18 +1,14 @@
 package com.github.gedzeppelin.kotlinutils.util
 
 import android.content.res.Resources
-import android.os.Bundle
 import android.os.Parcelable
-import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.app.ComponentActivity
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import com.github.gedzeppelin.kotlinutils.*
 import com.github.gedzeppelin.kotlinutils.GlobalToast.Companion.longToast
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.reflect.KProperty1
@@ -70,6 +66,31 @@ fun <T : ComponentActivity, S : Any> T.actionLaunch(
         is Response.Success -> {
             onSuccess?.invoke(result.payload)
             getString(R.string.sheet_action__on_success, actionMessages[0], prop.get(result.payload))
+        }
+        is Response.Error -> {
+            onError?.invoke(result)
+            getString(R.string.sheet_action__on_error, actionMessages[1])
+        }
+    }
+    onComplete?.invoke(result)
+    val stylizedMessage = HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    longToast(stylizedMessage)
+}
+
+fun <T : ComponentActivity, S : Any> T.actionLaunch(
+    action: Action,
+    displayName: (payload: S) -> String,
+    block: suspend () -> Response<S>,
+    onSuccess: ((payload: S) -> Unit)? = null,
+    onError: ((error: Response.Error) -> Unit)? = null,
+    onComplete: ((response: Response<S>) -> Unit)? = null
+): Job = lifecycleScope.launch {
+    val actionMessages = resources.getActionMessages(action)
+    val result = block()
+    val message = when (result) {
+        is Response.Success -> {
+            onSuccess?.invoke(result.payload)
+            getString(R.string.sheet_action__on_success, actionMessages[0], displayName(result.payload))
         }
         is Response.Error -> {
             onError?.invoke(result)

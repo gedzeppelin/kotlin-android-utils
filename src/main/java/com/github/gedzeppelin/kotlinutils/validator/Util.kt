@@ -6,8 +6,8 @@ import android.content.Context
 import android.text.InputType
 import android.widget.EditText
 import com.github.gedzeppelin.kotlinutils.R
-import com.github.gedzeppelin.kotlinutils.validator.impl0.ProgressButtonValidator
-import com.github.gedzeppelin.kotlinutils.validator.impl1.ValidatableEditText
+import com.github.gedzeppelin.kotlinutils.validator.impl.validatable.ValidatableEditText
+import com.github.gedzeppelin.kotlinutils.validator.impl.validator.ProgressButtonValidator
 import com.github.gedzeppelin.kotlinutils.widget.ProgressButton
 import kotlin.reflect.KProperty0
 
@@ -45,9 +45,9 @@ fun <S : EditText> Validator<*>.addPasswordEditText(
     val editText0 = prop0.get()
     val editText1 = prop1.get()
 
-    val bothError = context.getString(R.string.til_error__password_repeat)
-    val error0 = getDefaultError(context, editText0)
-    val error1 = getDefaultError(context, editText1)
+    val bothError = aContext.getString(R.string.til_error__password_repeat)
+    val error0 = getDefaultError(aContext, editText0)
+    val error1 = getDefaultError(aContext, editText1)
 
     lateinit var validatable0: VleEditText
     lateinit var validatable1: VleEditText

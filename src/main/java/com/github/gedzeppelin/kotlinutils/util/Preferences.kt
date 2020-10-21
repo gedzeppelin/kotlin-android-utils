@@ -39,7 +39,7 @@ fun <T : Activity> T.removePreference(key: String) =
  * [SharedPreferences] extension: Gets the (if exists) from the internal storage.
  *
  */
-inline fun <reified T : Any> SharedPreferences.getFromJson(key: String): T? =
+inline fun <reified T : Any> SharedPreferences.fromJson(key: String): T? =
     getString(key, null)?.let {
         val moshi: Moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(T::class.java)
@@ -55,13 +55,13 @@ inline fun <reified T : Any> SharedPreferences.getFromJson(key: String): T? =
  *
  * @return the current [S], if exists, otherwise null.
  *
- * @see SharedPreferences.getFromJson
+ * @see SharedPreferences.fromJson
  */
-inline fun <T : Context, reified S : Any> T.getFromJson(spKey: String, key: String): S? =
-    getSharedPreferences(spKey, Context.MODE_PRIVATE).getFromJson(key)
+inline fun <T : Context, reified S : Any> T.fromJson(spKey: String, key: String): S? =
+    getSharedPreferences(spKey, Context.MODE_PRIVATE).fromJson(key)
 
-inline fun <T : Activity, reified S : Any> T.getFromJson(key: String): S? =
-    getPreferences(Context.MODE_PRIVATE).getFromJson(key)
+inline fun <T : Activity, reified S : Any> T.fromJson(key: String): S? =
+    getPreferences(Context.MODE_PRIVATE).fromJson(key)
 
 
 /**

@@ -15,14 +15,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.github.gedzeppelin.kotlinutils.validator.impl1
+package com.github.gedzeppelin.kotlinutils.validator.impl.validatable
 
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import com.github.gedzeppelin.kotlinutils.validator.State
-import com.github.gedzeppelin.kotlinutils.validator.ValidatableContext
 import com.github.gedzeppelin.kotlinutils.validator.ValidatableRequired
+import com.github.gedzeppelin.kotlinutils.validator.ValidatorContext
 
 /**
  * (ES) Clase validable vinculada a una View, con [isValid] definido por una función. Usa como
@@ -32,7 +32,7 @@ import com.github.gedzeppelin.kotlinutils.validator.ValidatableRequired
  * function uses a String as a parameter. Error is displayed in a [EditText] error helper text.
  */
 open class ValidatableEditText<T : EditText>(
-    ctx: ValidatableContext,
+    ctx: ValidatorContext,
     error: CharSequence,
     override var value: T,
     callback: (String) -> Boolean,

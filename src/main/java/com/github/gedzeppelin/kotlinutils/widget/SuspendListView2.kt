@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.gedzeppelin.kotlinutils.R
-import com.github.gedzeppelin.kotlinutils.adapter.MutableListAdapter
+import com.github.gedzeppelin.kotlinutils.adapter.ModelAdapter
 import com.github.gedzeppelin.kotlinutils.databinding.SuspendListView2Binding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -47,10 +47,10 @@ class SuspendListView2<T : Any> @JvmOverloads constructor(
     }
 
     @Suppress("UNCHECKED_CAST")
-    var adapter: MutableListAdapter<T, out RecyclerView.ViewHolder>?
-        get() = (binding.rvwChildFilled.adapter as? MutableListAdapter<T, out RecyclerView.ViewHolder>?)
+    var adapter: ModelAdapter<T, out RecyclerView.ViewHolder>?
+        get() = (binding.rvwChildFilled.adapter as? ModelAdapter<T, out RecyclerView.ViewHolder>?)
         set(value) {
-            value?.onDataSetChanged = { itemCount ->
+            value?.onItemsChanged = { itemCount ->
                 if (itemCount == 0 && binding.vsrChildBoth.currentView === binding.rvwChildFilled) {
                     binding.vsrChildBoth.showNext()
                 } else if (itemCount > 0 && binding.vsrChildBoth.currentView === binding.svwChildEmpty) {

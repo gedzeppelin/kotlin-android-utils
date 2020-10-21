@@ -4,51 +4,51 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.reflect.KProperty1
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
-abstract class MutableListAdapter<T : Any, S : RecyclerView.ViewHolder>(
+abstract class ModelAdapter<T : Any, S : RecyclerView.ViewHolder>(
     private val identifier: KProperty1<T, Any>? = null
 ) : RecyclerView.Adapter<S>() {
-    val dataSet: MutableList<T> = mutableListOf()
-    var onDataSetChanged: ((itemCount: Int) -> Unit)? = null
+    val items: MutableList<T> = mutableListOf()
+    var onItemsChanged: ((itemCount: Int) -> Unit)? = null
 
-    final override fun getItemCount(): Int = dataSet.size
+    final override fun getItemCount(): Int = items.size
 
     fun replaceList(newList: List<T>) {
-        dataSet.clear()
-        dataSet.addAll(newList)
+        items.clear()
+        items.addAll(newList)
         notifyDataSetChanged()
-        onDataSetChanged?.invoke(itemCount)
+        onItemsChanged?.invoke(itemCount)
     }
 
     fun addItem(element: T, idx: Int = 0): T {
-        dataSet.add(idx, element)
+        items.add(idx, element)
         notifyItemInserted(idx)
-        onDataSetChanged?.invoke(itemCount)
+        onItemsChanged?.invoke(itemCount)
         return element
     }
 
     fun modifyItem(element: T, idx: Int? = null) {
         if (idx == null) {
             val index = indexOf(element)
-            dataSet[index] = element
+            items[index] = element
             notifyItemChanged(index)
         } else {
-            dataSet[idx] = element
+            items[idx] = element
             notifyItemChanged(idx)
         }
     }
 
     fun removeItem(element: T): T? {
         val index = indexOf(element)
-        val result = dataSet.removeAt(index)
+        val result = items.removeAt(index)
         notifyItemRemoved(index)
-        onDataSetChanged?.invoke(itemCount)
+        onItemsChanged?.invoke(itemCount)
         return result
     }
 
     fun removeItemAt(idx: Int): T? {
-        val result = dataSet.removeAt(idx)
+        val result = items.removeAt(idx)
         notifyItemRemoved(idx)
-        onDataSetChanged?.invoke(itemCount)
+        onItemsChanged?.invoke(itemCount)
         return result
     }
 
@@ -86,11 +86,11 @@ abstract class MutableListAdapter<T : Any, S : RecyclerView.ViewHolder>(
         return element
     }
 
-    fun getItemAt(idx: Int): T = dataSet[idx]
+    fun getItemAt(idx: Int): T = items[idx]
 
     fun tryGetItemAt(idx: Int): T? {
         return try {
-            dataSet[idx]
+            items[idx]
         } catch (e: Exception) {
             null
         }
@@ -99,13 +99,13 @@ abstract class MutableListAdapter<T : Any, S : RecyclerView.ViewHolder>(
     fun indexOf(element: T): Int {
         return if (identifier != null) {
             val prop0 = identifier.get(element)
-            dataSet.forEachIndexed { idx, e ->
+            items.forEachIndexed { idx, e ->
                 val prop1 = identifier.get(e)
                 if (prop0 == prop1) return idx
             }
             return -1
         } else {
-            dataSet.indexOf(element)
+            items.indexOf(element)
         }
     }
 
